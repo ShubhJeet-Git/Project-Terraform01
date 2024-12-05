@@ -75,11 +75,6 @@ variable "Prv_route_table_tag" {
       "Name" = "prv_route_table"
     }
 }
-variable "aws_region" {
-  description = "AWS region"
-  type        = string
-  default     = "ap-south-1"
-}
 
 
 variable "instance_type" {
@@ -101,13 +96,7 @@ variable "aws_instant_tag" {
   }
 }
 
-variable "bastion" {
-  type = map(string)
-  default = {
-    "Name" = "Bastion Host"
-    "Description" = "Bastion Host Instance"
-  }
-}
+
 
 variable "use_pub_ip" {
      type = bool
