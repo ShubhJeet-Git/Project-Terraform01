@@ -12,3 +12,7 @@ output "bastion_public_ip" {
         description = "Internet Gateway"
       
 }
+output "nat_igw_name" {
+   value = lookup(var.nat_igw_name, "Name")
+  description = "Internet Nat Gateway"
+}
