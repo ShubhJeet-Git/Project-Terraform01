@@ -80,67 +80,16 @@ resource "aws_route_table_association" "private_association" {
 
 
 # Create a Security Group for Bastion Host and private EC2 instance
-resource "aws_security_group" "bastion_sg" {
-  name        = "ssh-sg"
-  description = "Allow SSH access"
-  vpc_id = aws_vpc.myapp_vpc.id
-  ingress {
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]  # Allow SSH from anywhere
-  }
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]  # Allow all outbound traffic
-  }
-  tags = {
-    "Name"="bastion-sg"
-  }
-}
 
-resource "aws_security_group" "private_sg" {
-  vpc_id = aws_vpc.myapp_vpc.id
-  ingress {
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    security_groups = [aws_security_group.bastion_sg.id] # Allow SSH only from Bastion Host
-  }
-
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  tags = {
-    Name = "private-sg"
-  }
-
-}
 
 resource "aws_instance" "my_ec2" {
-  ami           = var.ami[1]  # Amazon Linux 2 AMI ID for ap-south-1 region
-  instance_type = var.instance_type[1]
-  subnet_id = aws_subnet.prv_subnet.id
-  key_name      =  aws_key_pair.ter-key.key_name
-  security_groups = [aws_security_group.private_sg.id]
-  associate_public_ip_address = var.use_pub_ip 
+  count = 2
   
-  tags = var.aws_instant_tag
+  ami           = "ami-0453ec754f44f9a4a" 
+  instance_type = "t2.micro"
+
+  tags = {
+    Name = "my_ec2-vm-${count.index }"
+  }
 }
 
-resource "aws_instance" "bastion" {
-  ami           = var.ami[0]# Amazon Linux 2 AMI ID for ap-south-1 region
-  instance_type = var.instance_type[0]
-  subnet_id = aws_subnet.pub_subnet.id
-  key_name      =  aws_key_pair.ter-key.key_name
-  security_groups = [aws_security_group.bastion_sg.id]
-  #associate_public_ip_address =  var.use_public_ip ? true : false
-
-  tags = var.bastion
-}
