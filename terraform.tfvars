@@ -12,9 +12,15 @@ prv_subnet_name = {
       "Name" = "private_subnet"
     }  
 igw_name = {
-  "Name" = "ter-IG"
+  "Name" = "ter-igw"
   "Description" = "internet gateway for public subnet"
 }
+
+ nat_igw_name= {
+  "Name" = "nat-ter-igw"
+  "Description" = "internet gateway for private subnet"
+}
+
 pub_route_cidr = "0.0.0.0./0"
 Pub_route_table_tag=  {
       "Name" = "public_route_table"
