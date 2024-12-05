@@ -50,7 +50,7 @@ variable "igw_name" {
 variable "nat_igw_name" {
   type = map(string)
   default = {
-    "Name" = "ter_NAT_GW"
+    "Name" = "nat_ter-igw"
   }
 }
 
@@ -68,10 +68,25 @@ variable "Pub_route_table_tag" {
   }
 }
 
+
+variable "Prv_route_table_tag" {
+   type = map(string)
+    default = {
+      "Name" = "prv_route_table"
+    }
+}
+variable "aws_region" {
+  description = "AWS region"
+  type        = string
+  default     = "ap-south-1"
+}
+
+
 variable "instance_type" {
   type = list(string)
   default = ["t2.micro","t2.nano"]
 }
+
 variable "ami" {
   type = list(string)
   default = ["ami-0453ec754f44f9a4a","ami-0453ec754f44f9a4a"]
